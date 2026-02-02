@@ -11,9 +11,10 @@ ctaLink: "#contact"
 attorneyName: "Jason Gunnell"
 attorneyTitles:
   - "Trial Lawyer"
+  - "Staff Judge Advocate, USAF Reserve"
 
 # Contact Information
-phone: "(775) 504-4471"
+phone: "(775) 504-4487"
 email: "jason@gunslaw.com"
 contactIntro: "If you would like to discuss a legal matter or schedule a consultation, click the email address below to send us an email, or contact the office using the information provided."
 
@@ -25,7 +26,7 @@ address:
   zip: "89423"
 
 po_box:
-  line: "1701 County Road, #D"
+  line: "1701 County Road, # D"
   city: "Minden"
   state: "NV"
   zip: "89423"
@@ -34,7 +35,7 @@ po_box:
 disclaimer: "This website is for informational purposes only and does not constitute legal advice. Viewing or contacting Gunslaw does not create an attorney-client relationship."
 contactDisclaimer: "Communications through this website do not establish an attorney-client relationship. Please do not send confidential information until such a relationship has been formally established."
 ---
-<!-- About section  -->
+
 Gunslaw is led by an attorney with extensive experience in public service, prosecution, and military leadership. With a career spanning state and county prosecution, appellate-level advocacy, and service as a commissioned officer in the United States Air Force, the firm brings disciplined judgment, courtroom experience, and a deep understanding of the justice system to every case.
 
 The firm's principal attorney has served as a Senior Deputy District Attorney in Nye County, Nevada, handling complex criminal matters and representing the State in high-stakes proceedings. Prior to that role, he served as a Senior Deputy Attorney General for the State of Nevada, gaining broad experience in government litigation, legal analysis, and institutional decision-making.
