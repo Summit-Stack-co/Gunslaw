@@ -1,6 +1,6 @@
-Guns Law Website
+J. Gunnell Law, LLC — Website
 
-This repository contains the Next.js frontend for the Guns Law website. The site is now built with the App Router, TypeScript, and Tailwind CSS as a clean frontend foundation for later backend work.
+This repository contains the Next.js site for J. Gunnell Law, LLC. It uses the App Router, TypeScript, and Tailwind CSS, with API routes for contact and SMS consent and optional Supabase persistence (see `supabase/` and `.env.example`).
 
 Stack
 
@@ -69,10 +69,9 @@ npm run build
 
 Design Notes
 
-- The site keeps the existing law-firm visual direction while moving the styling into Tailwind.
-- Reusable sections are componentized for future extension.
-- No backend, database, auth, Supabase, API routes, or server actions are included in this phase.
+- The site keeps a clear law-firm visual direction with Tailwind.
+- Reusable sections are componentized for extension.
 
 License
 
-This project is proprietary and intended for use by Guns Law. All rights reserved.
+This project is proprietary and intended for use by J. Gunnell Law, LLC. All rights reserved.
