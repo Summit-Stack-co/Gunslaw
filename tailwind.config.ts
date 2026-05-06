@@ -26,6 +26,8 @@ const config: Config = {
             hero: "#F7F7F7",
             /** Neutral wash behind hero — darker for contrast vs white sections */
             "hero-tint": "#E5E7E9",
+            /** Warm off-white that picks up the office-wall tone from the hero portrait. */
+            "hero-warm": "#F2EEE6",
             trust: "#FFFFFF",
             about: "#F7F7F7",
           },

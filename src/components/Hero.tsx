@@ -33,20 +33,45 @@ export function Hero({
     <section
       id="hero"
       className={[
-        "bg-brand-surface-hero-tint pt-14 lg:pt-[4.25rem]",
+        "relative overflow-hidden bg-brand-surface-hero-warm pt-14 lg:pt-[4.25rem]",
         fillViewport
           ? "flex min-h-0 flex-1 flex-col justify-center pb-3 sm:pb-4"
           : "pb-5 sm:pb-6 lg:pb-7",
       ].join(" ")}
     >
+      {/*
+        Desktop: portrait full-bleeds to the right edge of the viewport and dissolves into the white hero
+        via a left-side gradient — the photo IS the hero background, not a card.
+      */}
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 hidden lg:block lg:w-[58%] xl:w-[55%] 2xl:w-[52%]"
+        aria-hidden
+      >
+        <div className="relative h-full w-full">
+          <Image
+            src={imageSrc}
+            alt=""
+            fill
+            priority
+            sizes="(min-width: 1280px) 720px, (min-width: 1024px) 60vw, 0px"
+            className="object-cover object-[center_25%]"
+          />
+          {/* Fade photo into the warm hero tone so headline column reads as one surface */}
+          <div className="absolute inset-y-0 left-0 w-[42%] bg-gradient-to-r from-brand-surface-hero-warm from-0% via-brand-surface-hero-warm/85 via-35% to-transparent" />
+          {/* Soft top + bottom feather for the band edges */}
+          <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-brand-surface-hero-warm/70 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-brand-surface-hero-warm/70 to-transparent" />
+        </div>
+      </div>
+
       <div
         className={[
-          "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8",
+          "relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8",
           fillViewport ? "flex min-h-0 flex-1 flex-col justify-center" : "",
         ].join(" ")}
       >
-        <div className="grid w-full grid-cols-1 items-center gap-6 py-6 sm:py-7 lg:grid-cols-[minmax(0,1.28fr)_minmax(280px,0.82fr)] lg:gap-3 lg:py-8">
-          <div className="w-full max-w-3xl text-left">
+        <div className="grid w-full grid-cols-1 items-center gap-6 py-6 sm:py-7 lg:grid-cols-[minmax(0,1.05fr)_minmax(260px,0.95fr)] lg:items-stretch lg:gap-6 lg:py-8 xl:gap-8">
+          <div className="relative z-10 w-full max-w-3xl text-left lg:py-2">
             <div className="flex items-center gap-2.5">
               <span className="h-px w-9 shrink-0 bg-brand-accent" aria-hidden />
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-charcoal">
@@ -77,15 +102,20 @@ export function Hero({
             </div>
           </div>
 
-          <div className="flex w-full justify-center lg:justify-end">
-            <div className="relative aspect-square w-full max-w-[440px] overflow-hidden shadow-heroImage sm:max-w-[480px] lg:mx-0 lg:max-w-[min(100%,540px)] xl:max-w-[560px]">
+          {/* Mobile / tablet portrait — stacked beneath copy. Hidden on lg where the full-bleed bg is shown. */}
+          <div className="flex w-full justify-center lg:hidden">
+            <div className="relative aspect-[4/5] w-full max-w-[440px] overflow-hidden">
               <Image
                 src={imageSrc}
                 alt={imageAlt}
                 fill
                 priority
-                sizes="(max-width: 1024px) 92vw, 560px"
-                className="object-cover object-center"
+                sizes="(max-width: 1024px) 92vw, 0px"
+                className="object-cover object-[center_22%]"
+              />
+              <div
+                className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-brand-surface-hero-warm via-brand-surface-hero-warm/40 to-transparent"
+                aria-hidden
               />
             </div>
           </div>
