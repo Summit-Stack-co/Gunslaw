@@ -13,6 +13,10 @@ type ContactEmailFormProps = {
   flush?: boolean;
   /** Larger labels, inputs, and heading (e.g. fill viewport / hide footer below fold). */
   largeText?: boolean;
+  /** Override default “Message the office” heading. */
+  title?: string;
+  /** Optional placeholder for the message field. */
+  messagePlaceholder?: string;
 };
 
 export function ContactEmailForm({
@@ -20,6 +24,8 @@ export function ContactEmailForm({
   compact = false,
   flush = false,
   largeText = false,
+  title = "Message the office",
+  messagePlaceholder,
 }: ContactEmailFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -183,7 +189,7 @@ export function ContactEmailForm({
         </div>
       ) : null}
 
-      <h2 className={headingClass}>Message the office</h2>
+      <h2 className={headingClass}>{title}</h2>
 
       <form
         ref={formRef}
@@ -265,6 +271,7 @@ export function ContactEmailForm({
             maxLength={8000}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            placeholder={messagePlaceholder}
             className={`${inputClass} min-h-0 flex-1 resize-none`}
           />
         </div>

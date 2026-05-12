@@ -48,11 +48,13 @@ export const siteConfig = {
   navLinks: [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
+    { href: "/resources", label: "Resources" },
   ] satisfies NavLink[],
   legalLinks: [
     { href: "/privacy", label: "Privacy Policy" },
     { href: "/terms", label: "Terms of Service" },
     { href: "/sms-consent", label: "SMS consent" },
+    { href: "/resources", label: "Resources" },
     { href: "/contact", label: "Contact" },
   ] satisfies NavLink[],
   socialLinks: [] satisfies SocialLink[],
