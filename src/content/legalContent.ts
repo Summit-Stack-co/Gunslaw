@@ -1,3 +1,7 @@
+import {
+  SMS_NON_SHARING_NOTICE,
+  SMS_PROGRAM_DESCRIPTION,
+} from "@/content/smsConsent";
 import { siteConfig } from "@/lib/siteConfig";
 
 export const privacyContent = {
@@ -20,9 +24,14 @@ export const privacyContent = {
       ],
     },
     {
-      heading: "Text messaging and SMS",
+      heading: "SMS / Text Messaging",
       paragraphs: [
-        "Text messaging originator opt-in data and consent will not be shared with any third parties, excluding aggregators and providers of the text messaging services.",
+        SMS_PROGRAM_DESCRIPTION,
+        "Message frequency varies. Message and data rates may apply.",
+        "Reply STOP to opt out of SMS messages at any time. Reply HELP for assistance.",
+        "Carriers are not liable for delayed or undelivered messages.",
+        "Consent to receive SMS messages is not a condition of legal services.",
+        SMS_NON_SHARING_NOTICE,
       ],
     },
     {
@@ -65,9 +74,11 @@ export const termsContent = {
       heading: "SMS text messages (optional consent)",
       paragraphs: [
         `If you choose to receive SMS messages from ${siteConfig.legalName}, you may receive text messages related to scheduling, case updates, document reminders, and communication about your matter. Message frequency varies. Message and data rates may apply.`,
-        "Reply STOP to opt out of SMS messages at any time. Reply HELP for help.",
+        "Reply STOP to opt out of SMS messages at any time. Reply HELP for assistance.",
         `For questions, contact ${siteConfig.firmName} at ${siteConfig.phone} or ${siteConfig.email}. See our Privacy Policy at ${siteConfig.siteUrl}/privacy for how we handle your information.`,
         "Carriers are not liable for delayed or undelivered messages.",
+        "Consent to receive SMS messages is not a condition of legal services.",
+        SMS_NON_SHARING_NOTICE,
       ],
     },
   ],

@@ -116,7 +116,7 @@ export async function POST(request: Request) {
   const choice = body.consentChoice;
   if (choice !== "opt_in" && choice !== "opt_out") {
     return NextResponse.json(
-      { ok: false, error: 'Please choose whether you consent to SMS ("Yes" or "No").' },
+      { ok: false, error: "Invalid SMS consent selection." },
       { status: 400 },
     );
   }

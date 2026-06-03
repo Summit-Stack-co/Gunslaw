@@ -3,27 +3,30 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { SMS_CONSENT_AGREEMENT_TEXT } from "@/content/smsConsent";
+import {
+  SMS_CONSENT_CHECKBOX_LABEL,
+  SMS_CONSENT_DISCLOSURES,
+} from "@/content/smsConsent";
 import { siteConfig } from "@/lib/siteConfig";
 
-type ConsentChoice = "opt_in" | "opt_out" | "";
+type ConsentChoice = "opt_in" | "opt_out";
 
 export function SmsConsentForm() {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [consentChoice, setConsentChoice] = useState<ConsentChoice>("");
-  const [checkboxConfirmed, setCheckboxConfirmed] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [resultChoice, setResultChoice] = useState<ConsentChoice | "">("");
-
-  const showCheckboxBlock = consentChoice === "opt_in";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("loading");
     setMessage("");
+
+    // A ticked checkbox is the affirmative opt-in; submitting unticked records no consent.
+    const consentChoice: ConsentChoice = consentChecked ? "opt_in" : "opt_out";
 
     try {
       const res = await fetch("/api/sms-consent", {
@@ -34,7 +37,7 @@ export function SmsConsentForm() {
           phone,
           email,
           consentChoice,
-          consentCheckboxConfirmed: checkboxConfirmed,
+          consentCheckboxConfirmed: consentChecked,
         }),
       });
       const data = (await res.json()) as {
@@ -58,7 +61,7 @@ export function SmsConsentForm() {
 
       setResultChoice(data.consentChoice ?? consentChoice);
       setStatus("success");
-      if (data.consentChoice === "opt_out") {
+      if ((data.consentChoice ?? consentChoice) === "opt_out") {
         setMessage(
           `Thank you. Your preference has been recorded. ${siteConfig.firmName} will not send SMS messages to this number unless you provide consent later.`,
         );
@@ -80,7 +83,8 @@ export function SmsConsentForm() {
         <p className="text-base font-medium leading-relaxed text-brand-text">{message}</p>
         {resultChoice === "opt_in" ? (
           <p className="mt-4 text-sm leading-7 text-brand-muted">
-            You can update your preference at any time using this form again.
+            You can update your preference at any time using this form again, or by replying STOP to
+            any message.
           </p>
         ) : null}
       </div>
@@ -143,84 +147,47 @@ export function SmsConsentForm() {
           />
         </div>
 
-        <fieldset>
-          <legend className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-primary">
-            SMS communication <span className="text-brand-muted normal-case">(optional — choose one)</span>
+        <fieldset className="rounded-md border border-brand-border bg-brand-surface-trust p-4 sm:p-5">
+          <legend className="px-1 text-xs font-semibold uppercase tracking-[0.18em] text-brand-primary">
+            SMS communication consent <span className="text-brand-muted normal-case">(optional)</span>
           </legend>
-          <p className="mt-2 text-sm leading-6 text-brand-muted">
-            Consenting to SMS is optional and is not required to hire or receive services from {siteConfig.firmName}.
-          </p>
-          <div className="mt-4 space-y-3">
-            <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-brand-text">
-              <input
-                type="radio"
-                name="consentChoice"
-                value="opt_in"
-                checked={consentChoice === "opt_in"}
-                onChange={() => {
-                  setConsentChoice("opt_in");
-                  setCheckboxConfirmed(false);
-                }}
-                className="mt-1 border-brand-border text-brand-primary"
-              />
-              <span>Yes, I consent to receive SMS messages</span>
-            </label>
-            <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-brand-text">
-              <input
-                type="radio"
-                name="consentChoice"
-                value="opt_out"
-                checked={consentChoice === "opt_out"}
-                onChange={() => {
-                  setConsentChoice("opt_out");
-                  setCheckboxConfirmed(false);
-                }}
-                className="mt-1 border-brand-border text-brand-primary"
-              />
-              <span>No, I do not consent to receive SMS messages</span>
-            </label>
-          </div>
-        </fieldset>
 
-        {showCheckboxBlock ? (
-          <div className="rounded-md border border-brand-border bg-brand-surface-trust p-4 sm:p-5">
-            <label className="flex cursor-pointer items-start gap-3">
-              <input
-                type="checkbox"
-                checked={checkboxConfirmed}
-                onChange={(ev) => setCheckboxConfirmed(ev.target.checked)}
-                className="mt-1 h-4 w-4 shrink-0 rounded border-brand-border text-brand-primary"
-                required={consentChoice === "opt_in"}
-              />
-              <span className="text-sm leading-relaxed text-brand-text">{SMS_CONSENT_AGREEMENT_TEXT}</span>
-            </label>
-            <p className="mt-4 text-xs leading-5 text-brand-muted">
-              See also{" "}
-              <Link href="/privacy" className="link-inline font-semibold">
-                Privacy Policy
-              </Link>{" "}
-              and{" "}
-              <Link href="/terms" className="link-inline font-semibold">
-                Terms of Service
-              </Link>
-              .
-            </p>
-          </div>
-        ) : null}
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              name="consentChecked"
+              checked={consentChecked}
+              onChange={(ev) => setConsentChecked(ev.target.checked)}
+              className="mt-1 h-4 w-4 shrink-0 rounded border-brand-border text-brand-primary"
+            />
+            <span className="text-sm font-medium leading-relaxed text-brand-text">
+              {SMS_CONSENT_CHECKBOX_LABEL}
+            </span>
+          </label>
 
-        {consentChoice === "opt_out" ? (
-          <p className="text-xs leading-5 text-brand-muted">
-            Your choice not to receive SMS is respected. You may review our{" "}
+          <ul className="mt-4 space-y-2 border-t border-brand-border pt-4 text-sm leading-6 text-brand-muted">
+            {SMS_CONSENT_DISCLOSURES.map((disclosure) => (
+              <li key={disclosure} className="flex gap-2">
+                <span aria-hidden="true" className="select-none text-brand-primary">
+                  •
+                </span>
+                <span>{disclosure}</span>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-4 text-xs leading-5 text-brand-muted">
+            See our{" "}
             <Link href="/privacy" className="link-inline font-semibold">
               Privacy Policy
             </Link>{" "}
             and{" "}
             <Link href="/terms" className="link-inline font-semibold">
               Terms of Service
-            </Link>{" "}
-            at any time.
+            </Link>
+            . Leaving the box unchecked records that you do not consent to receive SMS messages.
           </p>
-        ) : null}
+        </fieldset>
 
         {status === "error" ? (
           <p className="rounded-sm border border-brand-primary/30 bg-brand-surface-about px-3 py-2 text-sm text-brand-primary" role="alert">
@@ -231,7 +198,7 @@ export function SmsConsentForm() {
         <div className="pt-2">
           <button
             type="submit"
-            disabled={status === "loading" || !consentChoice}
+            disabled={status === "loading"}
             className="btn-primary disabled:pointer-events-none disabled:opacity-50"
           >
             {status === "loading" ? "Submitting…" : "Submit preference"}
