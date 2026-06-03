@@ -1,0 +1,40 @@
+name: Supabase Keep-Alive
+
+# Keeps the Supabase free-tier project from pausing (it idles out after ~7 days
+# of no activity) by writing one row a day. The write toggles a single phone
+# number's SMS consent between opt_in / opt_out so the ping is visible.
+#
+# Requires two repository secrets (Settings → Secrets and variables → Actions):
+#   SUPABASE_URL                 e.g. https://xxxx.supabase.co
+#   SUPABASE_SERVICE_ROLE_KEY    the service_role secret (NOT the anon key)
+
+on:
+  schedule:
+    # 13:17 UTC daily. Off the top of the hour so GitHub is less likely to delay it.
+    - cron: "17 13 * * *"
+  workflow_dispatch: {} # allow manual runs from the Actions tab
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Ping Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/db-keepalive.mjs
